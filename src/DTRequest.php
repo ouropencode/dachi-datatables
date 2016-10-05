@@ -72,10 +72,8 @@ class DTRequest {
 		$options = Request::getArgument("options", array());
 
 		$model = Database::getRepository($this->source);
-		if(method_exists($model, "getDataTable"))
-			$table = $model->getDataTable($this, $options);
-		else
-			$table = array("total" => 21212, "total_filtered" => 12121, "records" => array());
+		
+		$table = $model->getDataTable($this, $options);
 
 		if(!isset($table["extra_data"]))
 			$table["extra_data"] = array();
