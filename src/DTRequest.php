@@ -72,7 +72,7 @@ class DTRequest {
 		$options = Request::getArgument("options", array());
 
 		$model = Database::getRepository($this->source);
-		
+
 		$table = $model->getDataTable($this, $options);
 
 		if(!isset($table["extra_data"]))
@@ -161,6 +161,22 @@ class DTRequest {
 			$where[] = new DTFilter($mapping[$filter->getColumn()], $filter->getComparison(), $filter->getValue());
 
 		return $where;
+	}
+
+	public function hasWhere($column) {
+		foreach($this->columns as $c) {
+			if(!isset($c["data"]) || !isset($c["search"]) || !isset($c["search"]["value"]) || !trim($c["search"]["value"]))
+				continue;
+
+			if($c["data"] != $column)
+				continue;
+
+			$search = json_decode($c["search"]["value"]);
+			if($search && trim($search->value))
+				return true;
+		}
+
+		return false;
 	}
 
 }
