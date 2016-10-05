@@ -179,4 +179,12 @@ class DTRequest {
 		return false;
 	}
 
+	public function setArgument($key, $value) {
+		$this->options["arguments"][$key] = $value;
+	}
+
+	public function getArgument($key) {
+		return $this->options["arguments"][$key];
+	}
+
 }
