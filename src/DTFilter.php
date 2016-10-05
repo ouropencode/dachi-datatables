@@ -5,7 +5,7 @@ use Dachi\Core\Request;
 use Dachi\Core\Database;
 
 class DTFilter {
-	
+
 	protected $column;
 	protected $comparison;
 	protected $value;
@@ -17,7 +17,7 @@ class DTFilter {
 		$this->comparison = $comparison;
 		$this->value      = $value;
 
-		$this->uniq_id    = "var" . md5($column . $comparison . uniqid('', true));
+		$this->uniq_id    = preg_replace("/[^a-zA-Z0-9]/", "", $column) . "_" . substr(md5($column . $comparison . uniqid('', true)), 0, 4);
 	}
 
 	public function getColumn() {
