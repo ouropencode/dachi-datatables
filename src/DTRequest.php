@@ -15,9 +15,9 @@ class DTRequest {
 	protected $order;
 	protected $columns;
 
-	public static function process($source, $options = array()) {
+	public static function process($source, $options = array(), $repoMethod = "getDataTable") {
 		$dt = new DTRequest($source, $options);
-		$dt->handle();
+		$dt->handle($repoMethod);
 		return $dt;
 	}
 
@@ -68,12 +68,11 @@ class DTRequest {
 		return true;
 	}
 
-	public function handle() {
+	public function handle($repoMethod) {
 		$options = Request::getArgument("options", array());
 
 		$model = Database::getRepository($this->source);
-
-		$table = $model->getDataTable($this, $options);
+  	$table = $model->$repoMethod($this, $options);
 
 		if(!isset($table["extra_data"]))
 			$table["extra_data"] = array();
