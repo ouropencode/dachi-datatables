@@ -62,7 +62,8 @@ class DTRequest {
 			"filteredTotalKey" => isset($options["filteredTotalKey"]) ? $options["filteredTotalKey"] : "total_filtered",
 			"extraKey"         => isset($options["extraKey"])         ? $options["extraKey"]         : "extra_data",
 			"forcedFilters"    => isset($options["forcedFilters"])    ? $options["forcedFilters"]    : array(),
-			"arguments"        => isset($options["arguments"])        ? $options["arguments"]        : array()
+			"arguments"        => isset($options["arguments"])        ? $options["arguments"]        : array(),
+			"repoMethod"       => isset($options["repoMethod"])       ? $options["repoMethod"]       : "getDataTable"
 		);
 
 		return true;
@@ -73,8 +74,12 @@ class DTRequest {
 
 		$model = Database::getRepository($this->source);
 
-		$table = $model->getDataTable($this, $options);
-
+		$repoMethod = $this->options['repoMethod'];
+		if(method_exists($model, $repoMethod))
+			$table = $model->$repoMethod($this, $options);
+		else
+			$table = array("total" => 21212, "total_filtered" => 12121, "records" => array());
+		
 		if(!isset($table["extra_data"]))
 			$table["extra_data"] = array();
 
