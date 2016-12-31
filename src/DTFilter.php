@@ -27,6 +27,24 @@ class DTFilter {
 	public function getComparison() {
 		return $this->comparison;
 	}
+	public function getWhere() {
+		return $this->getColumn()." ".$this->getComparison()." :".$this->uniq_id;
+	}
+	
+	public function setWhere($query) {
+		$value = "";
+		switch($this->getComparison()) {
+		case "LIKE":
+		case "like":
+			$value = "%" . $this->getValue() . "%";
+			break;
+		default:
+			$value = $this->getValue();
+		break;
+		}
+		$query->setParameter($this->uniq_id, $value);
+		return $query;
+	}
 
 	public function getValue() {
 		return $this->value;
