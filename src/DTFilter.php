@@ -30,7 +30,7 @@ class DTFilter {
 	public function getWhere() {
 		return $this->getColumn()." ".$this->getComparison()." :".$this->uniq_id;
 	}
-	
+
 	public function setWhere($query) {
 		$value = "";
 		switch($this->getComparison()) {
@@ -55,20 +55,8 @@ class DTFilter {
 	}
 
 	public function applyTo($query) {
-		$value = "";
-		switch($this->getComparison()) {
-			case "LIKE":
-			case "like":
-				$value = "%" . $this->getValue() . "%";
-				break;
-
-			default:
-				$value = $this->getValue();
-				break;
-		}
-
 		$query = $query->andWhere($this->getWhere());
-			$this->setWhere($query);
+		$this->setWhere($query);
 		return $query;
 	}
 
