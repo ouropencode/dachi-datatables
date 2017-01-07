@@ -67,9 +67,8 @@ class DTFilter {
 				break;
 		}
 
-		$query = $query->andWhere($this->getColumn() . " " . $this->getComparison() . " :" . $this->uniq_id)
-			->setParameter($this->uniq_id, $value);
-
+		$query = $query->andWhere($this->getWhere());
+			$this->setWhere($query);
 		return $query;
 	}
 
