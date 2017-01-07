@@ -34,13 +34,13 @@ class DTFilter {
 	public function setWhere($query) {
 		$value = "";
 		switch($this->getComparison()) {
-		case "LIKE":
-		case "like":
-			$value = "%" . $this->getValue() . "%";
+			case "LIKE":
+			case "like":
+				$value = "%" . $this->getValue() . "%";
+				break;
+			default:
+				$value = $this->getValue();
 			break;
-		default:
-			$value = $this->getValue();
-		break;
 		}
 		$query->setParameter($this->uniq_id, $value);
 		return $query;
