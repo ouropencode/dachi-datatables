@@ -12,7 +12,7 @@ class DTFilter {
 
 	protected $uniq_id;
 
-	public function __construct($column, $comparison, $value) {
+	public function __construct($column, $comparison, $value = null) {
 		$this->column     = $column;
 		$this->comparison = $comparison;
 		$this->value      = $value;
@@ -28,21 +28,23 @@ class DTFilter {
 		return $this->comparison;
 	}
 	public function getWhere() {
-		return $this->getColumn()." ".$this->getComparison()." :".$this->uniq_id;
+		return $this->getColumn() . " " . $this->getComparison() . ($this->value ? " :" . $this->uniq_id : "");
 	}
 
 	public function setWhere($query) {
 		$value = "";
 		switch($this->getComparison()) {
+			case "IS NULL":
+			case "IS NOT NULL":
+				break;
 			case "LIKE":
 			case "like":
-				$value = "%" . $this->getValue() . "%";
+				$query->setParameter($this->uniq_id, "%" . $this->getValue() . "%");
 				break;
 			default:
-				$value = $this->getValue();
+				$query->setParameter($this->uniq_id, $this->getValue());
 			break;
 		}
-		$query->setParameter($this->uniq_id, $value);
 		return $query;
 	}
 
