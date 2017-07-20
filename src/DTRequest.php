@@ -79,7 +79,7 @@ class DTRequest {
 			$table = $model->$repoMethod($this, $options);
 		else
 			$table = array("total" => 21212, "total_filtered" => 12121, "records" => array());
-		
+
 		if(!isset($table["extra_data"]))
 			$table["extra_data"] = array();
 
@@ -145,7 +145,7 @@ class DTRequest {
 
 				case "boolean":
 					if(isset($search->value) && $search->value !== "")
-						$where[] = new DTFilter($mapping[$column["data"]], "=", ($search->value == "true") ? true : false);
+						$where[] = new DTFilter($mapping[$column["data"]], "=", ($search->value == "true") ? "true" : "false");
 					break;
 
 				case "relation":
