@@ -28,7 +28,7 @@ class DTFilter {
 		return $this->comparison;
 	}
 	public function getWhere() {
-		return $this->getColumn() . " " . $this->getComparison() . ($this->value ? " :" . $this->uniq_id : "");
+		return $this->getColumn() . " " . $this->getComparison() . ($this->value !== null ? " :" . $this->uniq_id : "");
 	}
 
 	public function setWhere($query) {
@@ -42,7 +42,7 @@ class DTFilter {
 				$query->setParameter($this->uniq_id, "%" . $this->getValue() . "%");
 				break;
 			default:
-				$query->setParameter($this->uniq_id, $this->getValue());
+				$query->setParameter($this->uniq_id, $this->getValue() ? true : false);
 			break;
 		}
 		return $query;

@@ -145,7 +145,7 @@ class DTRequest {
 
 				case "boolean":
 					if(isset($search->value) && $search->value !== "")
-						$where[] = new DTFilter($mapping[$column["data"]], "=", ($search->value == "true") ? "true" : "false");
+						$where[] = new DTFilter($mapping[$column["data"]], "=", ($search->value == "true") ? true : false);
 					break;
 
 				case "relation":
