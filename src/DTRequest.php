@@ -132,6 +132,11 @@ class DTRequest {
 						$where[] = new DTFilter($mapping[$column["data"]], "<=", $search->end);
 					break;
 
+				case "date-single":
+					if($search->date)
+						$where[] = new DTFilter($mapping[$column["data"]], "=", $search->date);
+					break;
+
 				case "decimal":
 					$modifiers = array(
 						"eq" => "=",
@@ -145,7 +150,7 @@ class DTRequest {
 
 				case "boolean":
 					if(isset($search->value) && $search->value !== "")
-						$where[] = new DTFilter($mapping[$column["data"]], "=", ($search->value == "true") ? true : false);
+						$where[] = new DTFilter($mapping[$column["data"]], "=", $search->value == "true" ? true : false);
 					break;
 
 				case "relation":

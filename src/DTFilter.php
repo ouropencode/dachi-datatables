@@ -12,12 +12,13 @@ class DTFilter {
 
 	protected $uniq_id;
 
-	public function __construct($column, $comparison, $value = null) {
+	public function __construct($column, $comparison, $value = null, $is_boolean = false) {
 		$this->column     = $column;
 		$this->comparison = $comparison;
 		$this->value      = $value;
+		$this->is_boolean = $is_boolean;
 
-		$this->uniq_id    = preg_replace("/[^a-zA-Z0-9]/", "", $column) . "_" . substr(md5($column . $comparison . uniqid('', true)), 0, 4);
+		$this->uniq_id    = preg_replace("/[^a-zA-Z0-9]/", "", $column) . "_" . substr(md5($column . $comparison . uniqid('', true) . ($is_boolean ? "1" : "0")), 0, 4);
 	}
 
 	public function getColumn() {
@@ -31,6 +32,10 @@ class DTFilter {
 		return $this->getColumn() . " " . $this->getComparison() . ($this->value !== null ? " :" . $this->uniq_id : "");
 	}
 
+	public function getIsBoolean() {
+		return $this->is_boolean;
+	}
+
 	public function setWhere($query) {
 		$value = "";
 		switch($this->getComparison()) {
@@ -42,7 +47,11 @@ class DTFilter {
 				$query->setParameter($this->uniq_id, "%" . $this->getValue() . "%");
 				break;
 			default:
-				$query->setParameter($this->uniq_id, $this->getValue() ? true : false);
+				if($this->getIsBoolean()) {
+					$query->setParameter($this->uniq_id, $this->getValue() ? true : false);
+				} else {
+					$query->setParameter($this->uniq_id, $this->getValue());
+				}
 			break;
 		}
 		return $query;
