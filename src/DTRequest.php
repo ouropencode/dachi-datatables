@@ -35,8 +35,14 @@ class DTRequest {
 			$final_relation = $final_relation[0];
 		}
 
+		$repo = Database::getRepository($final_relation);
+		if(method_exists($repo, "findByDT"))
+			$db_data = $repo->findByDT($final_search);
+		else
+			$db_data = $repo->findBy($final_search);
+
 		$data = array();
-		foreach(Database::getRepository($final_relation)->findBy($final_search) as $row) {
+		foreach($db_data as $row) {
 			$data[] = array(
 				"id" => $row->getId(),
 				"value" => DTAccessor::access($row, $relation_name)
