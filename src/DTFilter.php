@@ -28,8 +28,10 @@ class DTFilter {
 	public function getComparison() {
 		return $this->comparison;
 	}
+
 	public function getWhere() {
-		return $this->getColumn() . " " . $this->getComparison() . ($this->value !== null ? " :" . $this->uniq_id : "");
+		$against = $this->getComparison() == "IN" ? ("(:" . $this->uniq_id . ")") : (" :" . $this->uniq_id);
+		return $this->getColumn() . " " . $this->getComparison() . " " . ($this->value !== null ? $against : "");
 	}
 
 	public function getIsBoolean() {
